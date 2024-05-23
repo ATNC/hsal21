@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  mysql-m:
+    image: mysql:8.0
+    container_name: mysql-m
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "${DB_MASTER_PORT}:3306"
+    volumes:
+      - mysql-master-data:/var/lib/mysql
+      - ./conf/m/my.cnf:/etc/mysql/conf.d/my.cnf
+
+  mysql-s1:
+    image: mysql:8.0
+    container_name: mysql-s1
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "${DB_SLAVE1_PORT}:3306"
+    volumes:
+      - mysql-slave1-data:/var/lib/mysql
+      - ./conf/s1/my.cnf:/etc/mysql/conf.d/my.cnf
+
+  mysql-s2:
+    image: mysql:8.0
+    container_name: mysql-s2
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "${DB_SLAVE2_PORT}:3306"
+    volumes:
+      - mysql-slave2-data:/var/lib/mysql
+      - ./conf/s2/my.cnf:/etc/mysql/conf.d/my.cnf
+
+volumes:
+  mysql-master-data:
+  mysql-slave1-data:
+  mysql-slave2-data:
